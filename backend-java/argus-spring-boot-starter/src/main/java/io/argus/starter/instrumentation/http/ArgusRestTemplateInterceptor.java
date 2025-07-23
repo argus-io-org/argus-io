@@ -1,6 +1,8 @@
 package io.argus.starter.instrumentation.http;
 
+import io.argus.common.dto.SpanDto;
 import io.argus.starter.context.TraceContextHolder;
+import io.argus.starter.publish.SpanPublisher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpRequest;
@@ -9,6 +11,8 @@ import org.springframework.http.client.ClientHttpRequestInterceptor;
 import org.springframework.http.client.ClientHttpResponse;
 
 import java.io.IOException;
+import java.time.Instant;
+import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -20,6 +24,14 @@ public class ArgusRestTemplateInterceptor implements ClientHttpRequestIntercepto
 
     private static final Logger log = LoggerFactory.getLogger(ArgusRestTemplateInterceptor.class);
     public static final String TRACE_ID_HEADER = "X-Argus-Trace-Id";
+
+    private final SpanPublisher spanPublisher;
+    private final String serviceName;
+
+    public ArgusRestTemplateInterceptor(SpanPublisher spanPublisher, String serviceName) {
+        this.spanPublisher = spanPublisher;
+        this.serviceName = serviceName;
+    }
 
     @Override
     public ClientHttpResponse intercept(HttpRequest request, byte[] body, ClientHttpRequestExecution execution) throws IOException {
@@ -39,23 +51,55 @@ public class ArgusRestTemplateInterceptor implements ClientHttpRequestIntercepto
         log.info("[ARGUS] ---> Starting HTTP Client Span [{}] | {} {} | TraceID=[{}]",
                 spanId, request.getMethod(), request.getURI(), traceId);
 
-        long startTime = System.nanoTime();
+        Instant startTime = Instant.now();
         try {
-            // 4. Execute the actual HTTP request.
             ClientHttpResponse response = execution.execute(request, body);
 
-            // 5. Log the successful result after execution.
-            long durationMillis = (System.nanoTime() - startTime) / 1_000_000;
-            log.info("[ARGUS] <--- Finished HTTP Client Span [{}] | Status [{}] | Duration=[{}ms]",
-                    spanId, response.getStatusCode(), durationMillis);
+            Instant endTime = Instant.now();
+            long duration = endTime.toEpochMilli() - startTime.toEpochMilli();
+
+            SpanDto span = SpanDto.builder()
+                    .traceId(traceId)
+                    .spanId(spanId)
+                    .serviceName(serviceName)
+                    .methodName(request.getMethod().name() + " " + request.getURI().toString())
+                    .startTime(startTime)
+                    .endTime(endTime)
+                    .durationMs(duration)
+                    .status("SUCCESS")
+                    .tags(Map.of(
+                            "type", "HTTP_CLIENT",
+                            "http.url", request.getURI().toString(),
+                            "http.status_code", String.valueOf(response.getStatusCode().value())
+                    ))
+                    .build();
+
+            spanPublisher.publishSpan(span);
 
             return response;
         } catch (IOException e) {
-            // 6. Also log errors if the request fails.
-            long durationMillis = (System.nanoTime() - startTime) / 1_000_000;
-            log.error("[ARGUS] <--- Failed HTTP Client Span [{}] | Error: {} | Duration=[{}ms]",
-                    spanId, e.getMessage(), durationMillis);
-            throw e; // Re-throw the exception so the calling code knows it failed.
+            Instant endTime = Instant.now();
+            long duration = endTime.toEpochMilli() - startTime.toEpochMilli();
+
+            SpanDto span = SpanDto.builder()
+                    .traceId(traceId)
+                    .spanId(spanId)
+                    .serviceName(serviceName)
+                    .methodName(request.getMethod().name() + " " + request.getURI().toString())
+                    .startTime(startTime)
+                    .endTime(endTime)
+                    .durationMs(duration)
+                    .status("FAILED")
+                    .errorMessage(e.getMessage())
+                    .tags(Map.of(
+                            "type", "HTTP_CLIENT",
+                            "http.url", request.getURI().toString()
+                    ))
+                    .build();
+
+            spanPublisher.publishSpan(span);
+
+            throw e;
         }
     }
 }

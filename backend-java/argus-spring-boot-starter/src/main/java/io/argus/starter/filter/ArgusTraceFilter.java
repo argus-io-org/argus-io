@@ -1,6 +1,7 @@
 package io.argus.starter.filter;
 
 import io.argus.starter.context.TraceContextHolder;
+import io.argus.starter.publish.SpanPublisher;
 import jakarta.servlet.Filter;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

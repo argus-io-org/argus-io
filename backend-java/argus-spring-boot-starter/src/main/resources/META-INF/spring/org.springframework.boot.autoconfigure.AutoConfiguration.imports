@@ -1,1 +1,2 @@
 io.argus.starter.config.ArgusAutoConfiguration
+io.argus.starter.config.ArgusRabbitMQConfig

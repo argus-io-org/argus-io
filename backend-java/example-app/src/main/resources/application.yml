@@ -4,3 +4,7 @@ server:
 logging:
   level:
     io.argus.starter.filter.ArgusTraceFilter: DEBUG
+
+spring:
+  application:
+    name: Example Service

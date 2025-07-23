@@ -4,3 +4,7 @@ server:
 logging:
   level:
     io.argus: INFO
+
+spring:
+  application:
+    name: Example Downstream Service
