@@ -1,6 +1,0 @@
-io/argus/starter/annotation/ArgusTraceable.class
-io/argus/starter/config/ArgusAutoConfiguration.class
-io/argus/starter/context/TraceContextHolder.class
-io/argus/starter/instrumentation/http/ArgusRestTemplateInterceptor.class
-io/argus/starter/filter/ArgusTraceFilter.class
-io/argus/starter/aspect/TracingAspect.class

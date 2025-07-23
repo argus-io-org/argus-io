@@ -1,6 +1,0 @@
-/Users/geoffrey/Developer/Argus/backend-java/argus-spring-boot-starter/src/main/java/io/argus/starter/annotation/ArgusTraceable.java
-/Users/geoffrey/Developer/Argus/backend-java/argus-spring-boot-starter/src/main/java/io/argus/starter/aspect/TracingAspect.java
-/Users/geoffrey/Developer/Argus/backend-java/argus-spring-boot-starter/src/main/java/io/argus/starter/config/ArgusAutoConfiguration.java
-/Users/geoffrey/Developer/Argus/backend-java/argus-spring-boot-starter/src/main/java/io/argus/starter/context/TraceContextHolder.java
-/Users/geoffrey/Developer/Argus/backend-java/argus-spring-boot-starter/src/main/java/io/argus/starter/filter/ArgusTraceFilter.java
-/Users/geoffrey/Developer/Argus/backend-java/argus-spring-boot-starter/src/main/java/io/argus/starter/instrumentation/http/ArgusRestTemplateInterceptor.java
