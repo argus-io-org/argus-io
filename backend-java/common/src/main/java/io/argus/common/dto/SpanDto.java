@@ -15,6 +15,7 @@ import java.util.Map;
 public class SpanDto {
     private String traceId;
     private String spanId;
+    private String parentSpanId;
     private String serviceName;
     private String methodName;
     private Instant startTime;
