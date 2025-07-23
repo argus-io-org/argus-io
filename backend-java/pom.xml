@@ -26,6 +26,7 @@
         <module>example-app-downstream</module>
         <module>collector-service</module>
         <module>common</module>
+        <module>query-api</module>
     </modules>
 
 </project>
