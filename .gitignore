@@ -1,0 +1,77 @@
+# Created by https://www.toptal.com/developers/gitignore/api/java,maven,intellij,macos
+# Edit at https://www.toptal.com/developers/gitignore?templates=java,maven,intellij,macos
+
+### IntelliJ ###
+# Covers IDE-specific files.
+.idea/
+*.iml
+*.iws
+
+### Java ###
+# Compiled class files
+*.class
+
+# Log files
+*.log
+
+# BlueJ files
+*.ctxt
+
+# Mobile Tools for Java (J2ME)
+.mtj.tmp/
+
+# Package Files #
+*.jar
+*.war
+*.nar
+*.ear
+*.zip
+*.tar.gz
+*.rar
+
+# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
+hs_err_pid*
+
+### Maven ###
+# This is the most important one for your build output
+target/
+
+!/src/main/mvn/wrapper/maven-wrapper.jar
+!/src/test/mvn/wrapper/maven-wrapper.jar
+
+# MAVEN_OPTS Prestaging Area
+.mvn/
+
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+buildNumber.properties
+
+### macOS ###
+# General macOS artifacts
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Thumbnails
+._*
+
+# Files that might appear in the root of a volume
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+
+# Directories potentially created on remote AFP shares
+.AppleDB
+.AppleDesktop
+Network Trash Folder
+Temporary Items
+.apdisk
+
