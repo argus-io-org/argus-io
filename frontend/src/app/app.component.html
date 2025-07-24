@@ -1,0 +1,88 @@
+<main class="container mt-4">
+  <header class="text-center mb-4">
+    <h1>{{ title }}</h1>
+    <p class="lead">Enter a Trace ID to view its spans.</p>
+  </header>
+
+  <div class="input-group mb-3">
+    <input
+      type="text"
+      class="form-control"
+      [(ngModel)]="traceIdInput"
+      placeholder="e.g., c5468cb0-da53-4e1e-8c11-e89dee47c956"
+      (keyup.enter)="onSearch()"
+    />
+    <button class="btn btn-primary" (click)="onSearch()" [disabled]="isLoading">
+      <span
+        *ngIf="isLoading"
+        class="spinner-border spinner-border-sm"
+        role="status"
+        aria-hidden="true"
+      ></span>
+      {{ isLoading ? " Searching..." : "Search" }}
+    </button>
+  </div>
+
+  <div class="results-container">
+    <div *ngIf="isLoading" class="d-flex justify-content-center mt-5">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    </div>
+
+    <div *ngIf="error" class="alert alert-danger mt-3">
+      <strong>Error:</strong> {{ error }}
+    </div>
+
+    <!-- This is the new Bootstrap table -->
+    <div
+      *ngIf="traceData && traceData.length > 0"
+      class="table-responsive mt-4"
+    >
+      <h3>
+        Spans for Trace: <small class="text-muted">{{ traceIdInput }}</small>
+      </h3>
+      <table class="table table-striped table-hover table-sm">
+        <thead class="table-dark">
+          <tr>
+            <th>Status</th>
+            <th>Service Name</th>
+            <th>Operation / Method</th>
+            <th>Duration (ms)</th>
+            <th>Error</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Loop through each span in the traceData array -->
+          <tr *ngFor="let span of traceData">
+            <td>
+              <!-- Use Bootstrap badges for status with color coding -->
+              <span
+                class="badge"
+                [ngClass]="{
+                  'bg-success': span.status === 'SUCCESS',
+                  'bg-danger': span.status === 'FAILED'
+                }"
+              >
+                {{ span.status }}
+              </span>
+            </td>
+            <td>{{ span.serviceName }}</td>
+            <td>
+              <code>{{ span.methodName }}</code>
+            </td>
+            <td class="text-end">{{ span.durationMs }}</td>
+            <td class="text-danger">{{ span.errorMessage || "None" }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div
+      *ngIf="traceData && traceData.length === 0"
+      class="alert alert-info mt-3"
+    >
+      No spans found for this Trace ID.
+    </div>
+  </div>
+</main>
