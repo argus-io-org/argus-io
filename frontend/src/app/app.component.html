@@ -101,10 +101,18 @@
 
   <div class="waterfall-container">
     <!-- Timeline Header -->
-    <div class="timeline-header">
-      <div class="time-marker">0ms</div>
-      <div class="time-marker">{{ totalDuration / 2 }}ms</div>
-      <div class="time-marker">{{ totalDuration }}ms</div>
+    <div class="timeline-header-row">
+      <!-- 1. Add an empty "spacer" div that takes up the same space as the span info column -->
+      <div class="span-info-header">Trace Details</div>
+
+      <!-- 2. The actual timeline now lives in its own container -->
+      <div class="timeline-header">
+        <div class="time-marker">0ms</div>
+        <div class="time-marker">
+          {{ totalDuration / 2 | number : "1.0-0" }}ms
+        </div>
+        <div class="time-marker">{{ totalDuration | number : "1.0-0" }}ms</div>
+      </div>
     </div>
 
     <!-- Span Rows -->

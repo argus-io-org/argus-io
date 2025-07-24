@@ -7,16 +7,6 @@
   overflow-x: auto;
 }
 
-.timeline-header {
-  display: flex;
-  justify-content: space-between;
-  border-bottom: 2px solid #ccc;
-  padding-bottom: 5px;
-  margin-bottom: 10px;
-  font-size: 0.8em;
-  color: #6c757d;
-}
-
 .span-row {
   display: flex;
   align-items: center;
@@ -61,4 +51,31 @@
 
 .duration-text {
   padding-left: 5px;
+}
+
+.timeline-header-row {
+  display: flex;
+  align-items: center;
+  border-bottom: 2px solid #ccc;
+  padding-bottom: 5px;
+  margin-bottom: 10px;
+  min-width: 600px;
+}
+
+/* This is the new "spacer" that pushes the timeline over */
+.span-info-header {
+  width: 35%; /* MUST be the same width as .span-info */
+  font-weight: bold;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* This is the right-hand side of the header */
+.timeline-header {
+  width: 60%; /* MUST be the same width as .span-timeline */
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.8em;
+  color: #6c757d;
 }
